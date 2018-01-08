@@ -46,7 +46,6 @@
                     android:id="@+id/meta_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#333"
                     android:layout_gravity="bottom"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/detail_inner_horiz_margin"
@@ -57,25 +56,32 @@
 
                     <TextView
                         android:id="@+id/article_title"
-                        style="?android:attr/textAppearanceLarge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
-                        android:fontFamily="sans-serif-condensed"
-                        android:textColor="#fff"
-                        android:textStyle="bold"
+                        android:fontFamily="sans-serif"
+                        android:hint="lolo"
                         android:textSize="@dimen/detail_title_text_size"
                         android:lineSpacingMultiplier="0.9" />
 
                     <TextView
                         android:id="@+id/article_byline"
-                        style="?android:attr/textAppearanceSmall"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
+                        android:hint="lolo"
+                        android:fontFamily="sans-serif"
+                        android:textSize="20sp"
                         android:layout_height="wrap_content"
-                        android:textColor="#8fff" />
+                        />
                 </LinearLayout>
-
+<view
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="@color/theme_primary"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
+    />
                 <TextView
+
                     android:id="@+id/article_body"
                     style="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"
