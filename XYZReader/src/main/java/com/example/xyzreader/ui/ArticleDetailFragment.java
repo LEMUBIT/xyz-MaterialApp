@@ -26,8 +26,10 @@ import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,13 +65,14 @@ public class ArticleDetailFragment extends Fragment implements
     Toolbar toolbar;
     private int mScrollY;
     private boolean mIsCard = false;
+    private ImageButton mUpButton;
     private int mStatusBarFullOpacityBottom;
-    TextView bodyView ;
+    TextView bodyView;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
-    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -93,10 +96,6 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-//todo check and compare
-//        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
-//        mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
-//                R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
     }
 
@@ -117,75 +116,21 @@ public class ArticleDetailFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-//        mDrawInsetsFrameLayout = (DrawInsetsFrameLayout)
-//                mRootView.findViewById(R.id.draw_insets_frame_layout);
-//        mDrawInsetsFrameLayout.setOnInsetsCallback(new DrawInsetsFrameLayout.OnInsetsCallback() {
-//            @Override
-//            public void onInsetsChanged(Rect insets) {
-//                mTopInset = insets.top;
-//            }
-//        });
-
         mScrollView = (NestedScrollView) mRootView.findViewById(R.id.scrollview);
-//        mScrollView.setCallbacks(new ObservableScrollView.Callbacks() {
-//            @Override
-//            public void onScrollChanged() {
-//                mScrollY = mScrollView.getScrollY();
-//                getActivityCast().onUpButtonFloorChanged(mItemId, ArticleDetailFragment.this);
-//                mPhotoContainerView.setTranslationY((int) (mScrollY - mScrollY / PARALLAX_FACTOR));
-//                updateStatusBar();
-//            }
-//        });
+        mUpButton = (ImageButton) mRootView.findViewById(R.id.action_up);
+        mUpButton.setOnClickListener(view -> getActivity().onBackPressed());
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);//
-        toolbar=(Toolbar) mRootView.findViewById(R.id.detailToolBar);
-      bodyView = (TextView) mRootView.findViewById(R.id.article_body);
-       // mPhotoContainerView = mRootView.findViewById(R.id.photo_container);//
-
+        toolbar = (Toolbar) mRootView.findViewById(R.id.detailToolBar);
+        bodyView = (TextView) mRootView.findViewById(R.id.article_body);
         mStatusBarColorDrawable = new ColorDrawable(0);//
 
-        mRootView.findViewById(R.id.share_fab)
-                .setOnClickListener(view -> startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
-                .setType("text/plain")
-                .setText("Some sample text")
-                .getIntent(), getString(R.string.action_share))));
-
         bindViews();
-//        updateStatusBar();
+
         return mRootView;
     }
-
-    //todo check out
-//    private void updateStatusBar() {
-//        int color = 0;
-//        if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
-//            float f = progress(mScrollY,
-//                    mStatusBarFullOpacityBottom - mTopInset * 3,
-//                    mStatusBarFullOpacityBottom - mTopInset);
-//            color = Color.argb((int) (255 * f),
-//                    (int) (Color.red(mMutedColor) * 0.9),
-//                    (int) (Color.green(mMutedColor) * 0.9),
-//                    (int) (Color.blue(mMutedColor) * 0.9));
-//        }
-//        mStatusBarColorDrawable.setColor(color);
-//        mDrawInsetsFrameLayout.setInsetBackground(mStatusBarColorDrawable);
-//    }
-
-//    static float progress(float v, float min, float max) {
-//        return constrain((v - min) / (max - min), 0, 1);
-//    }
-
-//    static float constrain(float val, float min, float max) {
-//        if (val < min) {
-//            return min;
-//        } else if (val > max) {
-//            return max;
-//        } else {
-//            return val;
-//        }
-//    }
 
     private Date parsePublishedDate() {
         try {
@@ -204,44 +149,18 @@ public class ArticleDetailFragment extends Fragment implements
         }
 
 
-
-
-
         bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         if (mCursor != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-           // titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
-            Log.e("title",mCursor.getString(ArticleLoader.Query.TITLE));
+            Log.e("title", mCursor.getString(ArticleLoader.Query.TITLE));
             toolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-            Date publishedDate = parsePublishedDate();
-//            if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-//                bylineView.setText(Html.fromHtml(
-//                        DateUtils.getRelativeTimeSpanString(
-//                                publishedDate.getTime(),
-//                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-//                                DateUtils.FORMAT_ABBREV_ALL).toString()
-//                                + " by <font color='#ffffff'>"
-//                                + mCursor.getString(ArticleLoader.Query.AUTHOR)
-//                                + "</font>"));
-//
-//            } else {
-//                // If date is before 1902, just show the string
-//                bylineView.setText(Html.fromHtml(
-//                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-//                        + mCursor.getString(ArticleLoader.Query.AUTHOR)
-//                                + "</font>"));
-//
-//            }
-
-            //todo uncomment for original text
-//            bodyView.setText
-//                    (Html.fromHtml(mCursor.getString(ArticleLoader
-//                            .Query.BODY).replaceAll("(\r\n|\n)",
-//                            "<br />")));
-bodyView.setText("I love my Country");
+            bodyView.setText
+                    (Html.fromHtml(mCursor.getString(ArticleLoader
+                            .Query.BODY).replaceAll("(\r\n|\n)",
+                            "<br />")));
 
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(mCursor.getString(ArticleLoader.Query.PHOTO_URL), new ImageLoader.ImageListener() {
@@ -250,7 +169,7 @@ bodyView.setText("I love my Country");
                             Bitmap bitmap = imageContainer.getBitmap();
                             if (bitmap != null) {
                                 mPhotoView.setImageBitmap(imageContainer.getBitmap());
-//                                updateStatusBar();
+
                             }
                         }
 
@@ -259,12 +178,12 @@ bodyView.setText("I love my Country");
 
                         }
                     });
-        }
-        else {
+        } else {
             mRootView.setVisibility(View.GONE);
             bodyView.setText("N/A");
         }
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
@@ -296,16 +215,5 @@ bodyView.setText("I love my Country");
         bindViews();
     }
 
-    public int getUpButtonFloor() {
-        if (mPhotoContainerView == null || mPhotoView.getHeight() == 0) {
-            return Integer.MAX_VALUE;
-        }
 
-        // account for parallax
-        return mIsCard
-                ? (int) mPhotoContainerView.getTranslationY() + mPhotoView.getHeight() - mScrollY
-                : mPhotoView.getHeight() - mScrollY;
-    }
-
-    //todo do options items selected here
 }
