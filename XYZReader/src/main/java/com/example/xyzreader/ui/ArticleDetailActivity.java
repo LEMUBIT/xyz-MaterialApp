@@ -38,9 +38,6 @@ public class ArticleDetailActivity extends ActionBarActivity
     private MyPagerAdapter mPagerAdapter;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +70,6 @@ public class ArticleDetailActivity extends ActionBarActivity
             }
 
 
-
             @Override
             public void onPageSelected(int position) {
                 if (mCursor != null) {
@@ -83,10 +79,6 @@ public class ArticleDetailActivity extends ActionBarActivity
 
             }
         });
-
-
-
-
 
 
         if (savedInstanceState == null) {
@@ -99,13 +91,12 @@ public class ArticleDetailActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-                default:
-                    return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
 
