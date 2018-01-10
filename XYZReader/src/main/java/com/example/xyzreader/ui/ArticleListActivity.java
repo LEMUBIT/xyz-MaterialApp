@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.xyzreader.R;
+import com.example.xyzreader.Utils.Connection;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
@@ -59,8 +61,10 @@ public class ArticleListActivity extends ActionBarActivity implements
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
-//        final View toolbarContainerView = findViewById(R.id.toolbar_container);
+       if(!( Connection.isConnected(ArticleListActivity.this) ) )
+       {
+           Snackbar.make(findViewById(R.id.articleListCoordinator),"Check Internet Connection",Snackbar.LENGTH_LONG).show();
+       }
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
