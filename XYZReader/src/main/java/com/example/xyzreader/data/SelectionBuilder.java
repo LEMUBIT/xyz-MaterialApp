@@ -42,22 +42,6 @@ public class SelectionBuilder {
     private StringBuilder mSelection;
     private ArrayList<String> mSelectionArgs;
 
-    /**
-     * Reset any internal state, allowing this builder to be recycled.
-     */
-    public SelectionBuilder reset() {
-        mTable = null;
-		if (mProjectionMap != null) {
-			mProjectionMap.clear();
-		}
-		if (mSelection != null) {
-			mSelection.setLength(0);
-		}
-		if (mSelectionArgs != null) {
-			mSelectionArgs.clear();
-		}
-        return this;
-    }
 
     /**
      * Append the given selection clause to the internal state. Each clause is
@@ -101,11 +85,6 @@ public class SelectionBuilder {
         }
     }
 
-    private void ensureProjectionMap() {
-		if (mProjectionMap == null) {
-			mProjectionMap = new HashMap<String, String>();
-		}
-    }
 
     private void ensureSelection(int lengthHint) {
     	if (mSelection == null) {
@@ -119,17 +98,6 @@ public class SelectionBuilder {
     	}
     }
 
-    public SelectionBuilder mapToTable(String column, String table) {
-    	ensureProjectionMap();
-        mProjectionMap.put(column, table + "." + column);
-        return this;
-    }
-
-    public SelectionBuilder map(String fromColumn, String toClause) {
-    	ensureProjectionMap();
-        mProjectionMap.put(fromColumn, toClause + " AS " + fromColumn);
-        return this;
-    }
 
     /**
      * Return selection string for current internal state.

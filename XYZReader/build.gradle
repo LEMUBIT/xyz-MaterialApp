@@ -10,6 +10,7 @@ apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
+    google()
 }
 
 android {
@@ -30,6 +31,7 @@ dependencies {
     compile "com.android.support:support-v4:$androidSupportVersion"
     compile "com.android.support:support-v13:$androidSupportVersion"
     compile "com.android.support:appcompat-v7:$androidSupportVersion"
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
     compile "com.android.support:design:$androidSupportVersion"
     compile "com.android.support:palette-v7:$androidSupportVersion"
